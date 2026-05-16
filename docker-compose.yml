@@ -1,0 +1,16 @@
+services:
+  mysql-db:
+    image: mysql:8.0
+    container_name: travel-reservation-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password123  # root password
+      MYSQL_DATABASE: project-db    # creates this database
+    ports:
+      - "3307:3306"                  # maps computer's port 3307 to the container's 3306
+    volumes:
+      - db_data:/var/lib/mysql       # saves data so it isn't lost when the container stops
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/01-init.sql # init sql script
+      - ./sql/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql # init seeded data
+volumes:
+  db_data:
